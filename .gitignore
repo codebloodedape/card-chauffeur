@@ -4,6 +4,22 @@
 *.user
 *.sln
 
+# General
+*.graphml
+*.docx
+
+# Directories
+Dummy/
+CardChauffeur/bin
+CardChauffeur/obj
+.vs/
+
+RandomCardGenerator/bin
+RandomCardGenerator/obj
+
+TestApplication/bin
+TestApplication/obj
+
 # Compiled source #
 ###################
 *.com

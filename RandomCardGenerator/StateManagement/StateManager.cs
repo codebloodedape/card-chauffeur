@@ -43,39 +43,5 @@ namespace RandomCardGenerator.StateManagement
         {
             currentState = state;
         }
-
-        //private static State currentState, previousState;
-
-        //private static void UpdateState(State state)
-        //{
-        //    previousState.Copy(currentState);
-        //    currentState.Copy(state);
-        //}
-
-        //internal static State GetCurrentState()
-        //{
-        //    return currentState;
-        //}
-        
-        //internal static State GetPreviousState()
-        //{
-        //    return previousState;
-        //}
-
-        //internal static void Draw(Card card)
-        //{
-        //    State state = new State();
-        //    state.card.Copy(card);
-        //    state.reset = false;
-        //    UpdateState(state);
-        //}
-
-        //internal static void Reset()
-        //{
-        //    previousState = new State();
-        //    currentState = new State();
-
-        //    currentState.reset = true;
-        //}
     }
 }
