@@ -1,3 +1,9 @@
+# VS
+#####
+*.csproj
+*.user
+*.sln
+
 # Compiled source #
 ###################
 *.com
