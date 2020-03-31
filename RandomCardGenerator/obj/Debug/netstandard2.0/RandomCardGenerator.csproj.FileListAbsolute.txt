@@ -1,0 +1,9 @@
+Z:\CardChauffeur\RandomCardGenerator\bin\Debug\netstandard2.0\RandomCardGenerator.deps.json
+Z:\CardChauffeur\RandomCardGenerator\bin\Debug\netstandard2.0\RandomCardGenerator.dll
+Z:\CardChauffeur\RandomCardGenerator\bin\Debug\netstandard2.0\RandomCardGenerator.pdb
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.csproj.CoreCompileInputs.cache
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.AssemblyInfoInputs.cache
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.AssemblyInfo.cs
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.dll
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.pdb
+Z:\CardChauffeur\RandomCardGenerator\obj\Debug\netstandard2.0\RandomCardGenerator.csprojAssemblyReference.cache

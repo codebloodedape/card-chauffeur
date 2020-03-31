@@ -1,0 +1,16 @@
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.exe
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.deps.json
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.runtimeconfig.json
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.runtimeconfig.dev.json
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.dll
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\TestApplication.pdb
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\RandomCardGenerator.dll
+Z:\CardChauffeur\TestApplication\bin\Debug\netcoreapp3.1\RandomCardGenerator.pdb
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.csprojAssemblyReference.cache
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.csproj.CoreCompileInputs.cache
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.AssemblyInfoInputs.cache
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.AssemblyInfo.cs
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.csproj.CopyComplete
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.dll
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.pdb
+Z:\CardChauffeur\TestApplication\obj\Debug\netcoreapp3.1\TestApplication.genruntimeconfig.cache
