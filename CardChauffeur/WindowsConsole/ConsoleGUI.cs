@@ -6,7 +6,7 @@ namespace CardChauffeur.WindowsConsole
     class ConsoleGUI
     {
         private Engine engine;
-        string headerString, cardString, helpString, confirmationString;
+        string headerString, cardString, helpString, log;
         bool confirmationPending;
         UserAction lastUserAction;
 
@@ -47,7 +47,7 @@ namespace CardChauffeur.WindowsConsole
         private void printFrame()
         {
             Console.Clear();
-            Console.WriteLine(headerString + cardString + helpString + confirmationString);
+            Console.WriteLine(headerString + cardString + helpString + log);
         }
 
         private string GetClosedCardFrame()
@@ -103,6 +103,128 @@ namespace CardChauffeur.WindowsConsole
             "\n";
         }
 
+        private void NoTriggered()
+        {
+            if (confirmationPending)
+            {
+                switch (lastUserAction)
+                {
+                    case UserAction.Shuffle:
+                    case UserAction.Reset:
+                    case UserAction.Quit:
+                        log = "";
+                        break;
+                }
+            }
+            else
+            {
+                log = "Invalid key";
+            }
+            confirmationPending = false;
+        }
+
+        private void YesTriggered()
+        {
+            if (confirmationPending)
+            {
+                switch (lastUserAction)
+                {
+                    case UserAction.Shuffle:
+                        log = "Shuffling the deck...";
+                        engine.Shuffle();
+                        log = "Deck reshuffled successfully.";
+                        break;
+                    case UserAction.Reset:
+                        log = "Resetting the game...";
+                        engine.Reset();
+                        log = "Game reset successfully.";
+                        cardString = GetClosedCardFrame();
+                        break;
+                    case UserAction.Quit:
+                        log = "Exiting...";
+                        Environment.Exit(0);
+                        break;
+                }
+                //log = "";
+            }
+            else
+            {
+                log = "Invalid key";
+            }
+            confirmationPending = false;
+        }
+
+        private void QuitTriggered()
+        {
+            if (confirmationPending)
+            {
+                log = "Invalid key";
+                confirmationPending = false;
+            }
+            else
+            {
+                confirmationPending = true;
+                lastUserAction = UserAction.Quit;
+                log = "Are you sure you want to exit? (Y/N): ";
+            }
+        }
+
+        private void ResetTriggered()
+        {
+            if (confirmationPending)
+            {
+                log = "Invalid key";
+                confirmationPending = false;
+            }
+            else
+            {
+                confirmationPending = true;
+                lastUserAction = UserAction.Reset;
+                log = "Are you sure you want to reset? (Y/N): ";
+            }
+        }
+
+        private void ShuffleTriggered()
+        {
+            if (confirmationPending)
+            {
+                log = "Invalid key";
+                confirmationPending = false;
+            }
+            else
+            {
+                confirmationPending = true;
+                lastUserAction = UserAction.Shuffle;
+                log = "Are you sure you want to shuffle? (Y/N): ";
+            }
+        }
+
+        private void PlayTriggered()
+        {
+            if (confirmationPending)
+            {
+                log = "Invalid key";
+                confirmationPending = false;
+            }
+            else
+            {
+                log = "Drawing new card...";
+                Card newCard = engine.Draw();
+                if (newCard == null)
+                {
+                    log = "Cards in the deck are over. Do you want to reset? (Y/N): ";
+                    confirmationPending = true;
+                    lastUserAction = UserAction.Reset;
+                }
+                else
+                {
+                    log = "A card was drew";
+                    cardString = GetCard(GetCardCode(newCard.number), GetSuitCode(newCard.suit));
+                    confirmationPending = false;
+                }
+            }
+        }
+
         internal ConsoleGUI()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -111,7 +233,7 @@ namespace CardChauffeur.WindowsConsole
             headerString = GetHeader();
             cardString = GetClosedCardFrame();
             helpString = GetHelp();
-            confirmationString = "";
+            log = "";
         }
 
         internal void StartGame()
@@ -124,128 +246,27 @@ namespace CardChauffeur.WindowsConsole
                 switch (key.Key)
                 {
                     case ConsoleKey.P:
-
-                        if (confirmationPending)
-                        {
-                            confirmationString = "Invalid key";
-                            confirmationPending = false;
-                        }
-                        else
-                        {
-                            Card newCard = engine.Draw();
-                            if (newCard == null)
-                            {
-                                confirmationString = "Cards in the deck are over. Do you want to reset? (Y/N): ";
-                                confirmationPending = true;
-                                lastUserAction = UserAction.Reset;
-                            }
-                            else
-                            {
-                                confirmationString = "";
-                                cardString = GetCard(GetCardCode(newCard.number), GetSuitCode(newCard.suit));
-                                confirmationPending = false;
-                            }
-                        }
+                        PlayTriggered();
                         break;
-                    
                     case ConsoleKey.S:
-
-                        if (confirmationPending)
-                        {
-                            confirmationString = "Invalid key";
-                            confirmationPending = false;
-                        }
-                        else
-                        {
-                            confirmationPending = true;
-                            lastUserAction = UserAction.Shuffle;
-                            confirmationString = "Are you sure you want to shuffle? (Y/N): ";
-                        }
+                        ShuffleTriggered();
                         break;
-                    
                     case ConsoleKey.R:
-
-                        if (confirmationPending)
-                        {
-                            confirmationString = "Invalid key";
-                            confirmationPending = false;
-                        }
-                        else
-                        {
-                            confirmationPending = true;
-                            lastUserAction = UserAction.Reset;
-                            confirmationString = "Are you sure you want to reset? (Y/N): ";
-                        }
-
+                        ResetTriggered();
                         break;
-                    
                     case ConsoleKey.Q:
-
-                        if (confirmationPending)
-                        {
-                            confirmationString = "Invalid key";
-                            confirmationPending = false;
-                        }
-                        else
-                        {
-                            confirmationPending = true;
-                            lastUserAction = UserAction.Quit;
-                            confirmationString = "Are you sure you want to exit? (Y/N): ";
-                        }
-                        
+                        QuitTriggered();
                         break;
-
                     case ConsoleKey.Y:
-
-                        if (confirmationPending)
-                        {
-                            switch (lastUserAction)
-                            {
-                                case UserAction.Shuffle:
-                                    engine.Shuffle();
-                                    break;
-                                case UserAction.Reset:
-                                    engine.Reset();
-                                    cardString = GetClosedCardFrame();
-                                    break;
-                                case UserAction.Quit:
-                                    Environment.Exit(0);
-                                    break;
-                            }
-                            confirmationString = "";
-                        }
-                        else
-                        {
-                            confirmationString = "Invalid key";
-                        }
-                        confirmationPending = false;
+                        YesTriggered();
                         break;
-
                     case ConsoleKey.N:
-
-                        if (confirmationPending)
-                        {
-                            switch (lastUserAction)
-                            {
-                                case UserAction.Shuffle:
-                                case UserAction.Reset:
-                                case UserAction.Quit:
-                                    confirmationString = "";
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            confirmationString = "Invalid key";
-                        }
-                        confirmationPending = false;
+                        NoTriggered();
                         break;
-
                     default:
-                        confirmationString = "Invalid key";
+                        log = "Invalid key";
                         confirmationPending = false;
                         break;
-                   
                 }
                 printFrame();
             }

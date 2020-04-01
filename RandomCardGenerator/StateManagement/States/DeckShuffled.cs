@@ -4,30 +4,35 @@ using System.Text;
 
 namespace RandomCardGenerator.StateManagement.States
 {
-    class DeckShuffled : State
+    /// <summary>
+    /// State representing that the deck has been shuffled
+    /// </summary>
+    class DeckShuffled : IState
     {
-        StateManager context;
-        public DeckShuffled(StateManager context)
+        StateObject context;
+        StateManager stateManager;
+        public DeckShuffled(StateManager stateManager, StateObject context)
         {
+            this.stateManager = stateManager;
             this.context = context;
         }
         public Card Draw()
         {
             Card card = context.deck.Draw();
-            context.SetState(context.cardDrewState);
+            context.currentState = (stateManager.cardDrewState);
             return card;
         }
 
         public void GameReset()
         {
             context.deck.Reset();
-            context.SetState(context.resetState);
+            context.currentState = (stateManager.resetState);
         }
 
         public void Shuffle()
         {
             context.deck.Shuffle();
-            // No need to set state
+            // No need to reassign the current state here.
         }
     }
 }

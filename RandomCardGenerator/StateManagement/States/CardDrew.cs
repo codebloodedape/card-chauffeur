@@ -4,11 +4,16 @@ using System.Text;
 
 namespace RandomCardGenerator.StateManagement.States
 {
-    class CardDrew : State
+    /// <summary>
+    /// State representing a card has been drew.
+    /// </summary>
+    class CardDrew : IState
     {
-        StateManager context;
-        public CardDrew(StateManager context)
+        StateObject context;
+        StateManager stateManager;
+        public CardDrew(StateManager stateManager, StateObject context)
         {
+            this.stateManager = stateManager;
             this.context = context;
         }
         public Card Draw()
@@ -17,9 +22,10 @@ namespace RandomCardGenerator.StateManagement.States
 
             if (card == null)
             {
-                context.SetState(context.deckIsEmptyState);
+                // Deck is empty.
+                context.currentState = (stateManager.deckIsEmptyState);
             }
-            // else, no need to change the state.
+            // else, no need to reassign the current state here.
 
             return card;
         }
@@ -27,13 +33,13 @@ namespace RandomCardGenerator.StateManagement.States
         public void GameReset()
         {
             context.deck.Reset();
-            context.SetState(context.resetState);
+            context.currentState = (stateManager.resetState);
         }
 
         public void Shuffle()
         {
             context.deck.Shuffle();
-            context.SetState(context.deckShuffledState);
+            context.currentState = (stateManager.deckShuffledState);
         }
     }
 }

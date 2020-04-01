@@ -4,7 +4,10 @@ using System.Text;
 
 namespace RandomCardGenerator.StateManagement.States
 {
-    interface State
+    /// <summary>
+    /// Interface for the states
+    /// </summary>
+    interface IState
     {
         void GameReset();
 
