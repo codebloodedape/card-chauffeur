@@ -3,13 +3,46 @@ using System;
 
 namespace CardChauffeur.WindowsConsole
 {
+    /// <summary>
+    /// This is the console GUI class which displays and retrieves info on STD console
+    /// </summary>
     class ConsoleGUI
     {
-        private Engine engine;
-        string headerString, cardString, helpString, log;
-        bool confirmationPending;
-        UserAction lastUserAction;
+        private readonly Engine engine;
+        private readonly string headerString = 
+            "\n       CARD CHAUFFEUR\n\n";
 
+        private readonly string closedCardFrame = 
+            "   .====================.\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   ||||||||||||||||||||||\n" +
+            "   '===================='";
+
+        private readonly string gamehelp =
+            "\n\n   Play - P     Shuffle - S\n" +
+            "   Reset - R     Quit - Q\n\n";
+
+        private readonly string confirmationHelp = 
+            "\n\n   Yes - Y     No - N\n\n\n";
+
+        private string cardString, helpString, log;
+        private bool confirmationPending;
+        private EUserAction lastUserAction;
+
+        /// <summary>
+        /// Gets the card code string based on index
+        /// </summary>
+        /// <param name="number">Index of the card</param>
+        /// <returns></returns>
         private string GetCardCode(int number)
         {
             switch (number)
@@ -27,6 +60,11 @@ namespace CardChauffeur.WindowsConsole
             }
         }
 
+        /// <summary>
+        /// Gets the unicode of the suit symbol
+        /// </summary>
+        /// <param name="suit">Suit of the card</param>
+        /// <returns></returns>
         private string GetSuitCode(Suit suit)
         {
             switch (suit)
@@ -44,38 +82,21 @@ namespace CardChauffeur.WindowsConsole
             }
         }
 
+        /// <summary>
+        /// Clears the console and prints the header, card frame, help and action log
+        /// </summary>
         private void printFrame()
         {
             Console.Clear();
             Console.WriteLine(headerString + cardString + helpString + log);
         }
 
-        private string GetClosedCardFrame()
-        {
-            return
-            "   .====================.\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   ||||||||||||||||||||||\n" +
-            "   '===================='";
-        }
-
-        private string GetHeader()
-        {
-            return
-            "\n" +
-            "       CARD CHAUFFEUR\n" +
-            "\n";
-        }
-
+        /// <summary>
+        /// Returns the card frame to be printed on console, with card suit and code.
+        /// </summary>
+        /// <param name="number">Code of the card</param>
+        /// <param name="suit">Suit of the card</param>
+        /// <returns></returns>
         private string GetCard(string number, string suit)
         {
             return
@@ -94,20 +115,10 @@ namespace CardChauffeur.WindowsConsole
             "   '===================='";
         }
 
-        private string GetHelpStringForGame()
-        {
-            return
-            "\n\n   Play - P     Shuffle - S\n" +
-            "   Reset - R     Quit - Q\n\n";
-        }
-
-        private string GetHelpStringForConfirmation()
-        {
-            return
-            "\n\n   Yes - Y     No - N\n\n\n";
-        }
-
-        private void NoTriggered()
+        /// <summary>
+        /// When No is selected by the user
+        /// </summary>
+        private void NoOptionTriggered()
         {
             if (confirmationPending)
             {
@@ -118,27 +129,30 @@ namespace CardChauffeur.WindowsConsole
                 log = "Invalid key";
             }
             confirmationPending = false;
-            helpString = GetHelpStringForGame();
+            helpString = gamehelp;
         }
 
-        private void YesTriggered()
+        /// <summary>
+        /// When Yes is selected by the user
+        /// </summary>
+        private void YesOptionTriggered()
         {
             if (confirmationPending)
             {
                 switch (lastUserAction)
                 {
-                    case UserAction.Shuffle:
+                    case EUserAction.Shuffle:
                         log = "Shuffling the deck...";
                         engine.Shuffle();
                         log = "Deck reshuffled successfully.";
                         break;
-                    case UserAction.Reset:
+                    case EUserAction.Reset:
                         log = "Resetting the game...";
                         engine.Reset();
                         log = "Game reset successfully.";
-                        cardString = GetClosedCardFrame();
+                        cardString = closedCardFrame;
                         break;
-                    case UserAction.Quit:
+                    case EUserAction.Quit:
                         log = "Exiting...";
                         Environment.Exit(0);
                         break;
@@ -150,67 +164,79 @@ namespace CardChauffeur.WindowsConsole
                 log = "Invalid key";
             }
             confirmationPending = false;
-            helpString = GetHelpStringForGame();
+            helpString = gamehelp;
         }
 
-        private void QuitTriggered()
+        /// <summary>
+        /// When Quit is selected by the user
+        /// </summary>
+        private void QuitOptionTriggered()
         {
             if (confirmationPending)
             {
                 log = "Invalid key";
                 confirmationPending = false;
-                helpString = GetHelpStringForGame();
+                helpString = gamehelp;
             }
             else
             {
                 confirmationPending = true;
-                helpString = GetHelpStringForConfirmation();
-                lastUserAction = UserAction.Quit;
+                helpString = confirmationHelp;
+                lastUserAction = EUserAction.Quit;
                 log = "Are you sure you want to exit?";
             }
         }
 
-        private void ResetTriggered()
+        /// <summary>
+        /// When Reset is selected by the user
+        /// </summary>
+        private void ResetOptionTriggered()
         {
             if (confirmationPending)
             {
                 log = "Invalid key";
                 confirmationPending = false;
-                helpString = GetHelpStringForGame();
+                helpString = gamehelp;
             }
             else
             {
                 confirmationPending = true;
-                helpString = GetHelpStringForConfirmation();
-                lastUserAction = UserAction.Reset;
+                helpString = confirmationHelp;
+                lastUserAction = EUserAction.Reset;
                 log = "Are you sure you want to reset?";
             }
         }
 
-        private void ShuffleTriggered()
+        /// <summary>
+        /// When Shuffle is selected by the user
+        /// </summary>
+        private void ShuffleOptionTriggered()
         {
             if (confirmationPending)
             {
                 log = "Invalid key";
                 confirmationPending = false;
-                helpString = GetHelpStringForGame();
+                helpString = gamehelp;
             }
             else
             {
                 confirmationPending = true;
-                helpString = GetHelpStringForConfirmation();
-                lastUserAction = UserAction.Shuffle;
+                helpString = confirmationHelp;
+                lastUserAction = EUserAction.Shuffle;
                 log = "Are you sure you want to shuffle?";
             }
         }
 
-        private void PlayTriggered()
+        /// <summary>
+        /// When Play is selected by the user
+        /// </summary>
+        private void PlayOptionTriggered()
         {
             if (confirmationPending)
             {
                 log = "Invalid key";
                 confirmationPending = false;
-                helpString = GetHelpStringForGame();
+                helpString = gamehelp;
             }
             else
             {
@@ -220,30 +246,35 @@ namespace CardChauffeur.WindowsConsole
                 {
                     log = "Cards in the deck are over. Do you want to reset? (Y/N): ";
                     confirmationPending = true;
-                    helpString = GetHelpStringForConfirmation();
-                    lastUserAction = UserAction.Reset;
+                    helpString = confirmationHelp;
+                    lastUserAction = EUserAction.Reset;
                 }
                 else
                 {
                     log = "A card was drew";
                     cardString = GetCard(GetCardCode(newCard.number), GetSuitCode(newCard.suit));
                     confirmationPending = false;
-                    helpString = GetHelpStringForGame();
+                    helpString = gamehelp;
                 }
             }
         }
 
+        /// <summary>
+        /// Loads the game engine and returns the object. It does not the game though. 
+        /// </summary>
         internal ConsoleGUI()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             engine = new Engine();
 
-            headerString = GetHeader();
-            cardString = GetClosedCardFrame();
-            helpString = GetHelpStringForGame();
+            cardString = closedCardFrame;
+            helpString = gamehelp;
             log = "";
         }
 
+        /// <summary>
+        /// This method prints the strings based on the initial state and starts listening to the console input of a character
+        /// </summary>
         internal void StartGame()
         {
             engine.Start();
@@ -254,27 +285,27 @@ namespace CardChauffeur.WindowsConsole
                 switch (key.Key)
                 {
                     case ConsoleKey.P:
-                        PlayTriggered();
+                        PlayOptionTriggered();
                         break;
                     case ConsoleKey.S:
-                        ShuffleTriggered();
+                        ShuffleOptionTriggered();
                         break;
                     case ConsoleKey.R:
-                        ResetTriggered();
+                        ResetOptionTriggered();
                         break;
                     case ConsoleKey.Q:
-                        QuitTriggered();
+                        QuitOptionTriggered();
                         break;
                     case ConsoleKey.Y:
-                        YesTriggered();
+                        YesOptionTriggered();
                         break;
                     case ConsoleKey.N:
-                        NoTriggered();
+                        NoOptionTriggered();
                         break;
                     default:
                         log = "Invalid key";
                         confirmationPending = false;
-                        helpString = GetHelpStringForGame();
+                        helpString = gamehelp;
                         break;
                 }
                 printFrame();
