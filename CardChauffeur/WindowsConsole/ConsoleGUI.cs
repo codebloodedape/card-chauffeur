@@ -121,7 +121,6 @@ namespace CardChauffeur.WindowsConsole
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true); //TRUE to not display the key pressed
-                //State state;
                 switch (key.Key)
                 {
                     case ConsoleKey.P:
@@ -204,7 +203,6 @@ namespace CardChauffeur.WindowsConsole
                             {
                                 case UserAction.Shuffle:
                                     engine.Shuffle();
-                                    //card = GetCard(GetCardCode(state.card.number), GetSuitCode(state.card.suit));
                                     break;
                                 case UserAction.Reset:
                                     engine.Reset();

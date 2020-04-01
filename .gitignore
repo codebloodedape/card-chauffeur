@@ -1,6 +1,5 @@
 # VS
 #####
-*.csproj
 *.user
 *.sln
 
@@ -9,16 +8,17 @@
 *.docx
 
 # Directories
+#############
 Dummy/
-CardChauffeur/bin
-CardChauffeur/obj
-.vs/
 
-RandomCardGenerator/bin
-RandomCardGenerator/obj
+CardChauffeur/bin/
+CardChauffeur/obj/
 
-TestApplication/bin
-TestApplication/obj
+RandomCardGenerator/bin/
+RandomCardGenerator/obj/
+
+TestApplication/bin/
+TestApplication/obj/
 
 # Compiled source #
 ###################
