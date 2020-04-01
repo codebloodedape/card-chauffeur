@@ -94,33 +94,31 @@ namespace CardChauffeur.WindowsConsole
             "   '===================='";
         }
 
-        private string GetHelp()
+        private string GetHelpStringForGame()
         {
             return
-            "\n\n" +
-            "   Play - P     Shuffle - S\n" +
-            "   Reset - R     Quit - Q\n" +
-            "\n";
+            "\n\n   Play - P     Shuffle - S\n" +
+            "   Reset - R     Quit - Q\n\n";
+        }
+
+        private string GetHelpStringForConfirmation()
+        {
+            return
+            "\n\n   Yes - Y     No - N\n\n\n";
         }
 
         private void NoTriggered()
         {
             if (confirmationPending)
             {
-                switch (lastUserAction)
-                {
-                    case UserAction.Shuffle:
-                    case UserAction.Reset:
-                    case UserAction.Quit:
-                        log = "";
-                        break;
-                }
+                log = "";
             }
             else
             {
                 log = "Invalid key";
             }
             confirmationPending = false;
+            helpString = GetHelpStringForGame();
         }
 
         private void YesTriggered()
@@ -152,6 +150,7 @@ namespace CardChauffeur.WindowsConsole
                 log = "Invalid key";
             }
             confirmationPending = false;
+            helpString = GetHelpStringForGame();
         }
 
         private void QuitTriggered()
@@ -160,12 +159,14 @@ namespace CardChauffeur.WindowsConsole
             {
                 log = "Invalid key";
                 confirmationPending = false;
+                helpString = GetHelpStringForGame();
             }
             else
             {
                 confirmationPending = true;
+                helpString = GetHelpStringForConfirmation();
                 lastUserAction = UserAction.Quit;
-                log = "Are you sure you want to exit? (Y/N): ";
+                log = "Are you sure you want to exit?";
             }
         }
 
@@ -175,12 +176,14 @@ namespace CardChauffeur.WindowsConsole
             {
                 log = "Invalid key";
                 confirmationPending = false;
+                helpString = GetHelpStringForGame();
             }
             else
             {
                 confirmationPending = true;
+                helpString = GetHelpStringForConfirmation();
                 lastUserAction = UserAction.Reset;
-                log = "Are you sure you want to reset? (Y/N): ";
+                log = "Are you sure you want to reset?";
             }
         }
 
@@ -190,12 +193,14 @@ namespace CardChauffeur.WindowsConsole
             {
                 log = "Invalid key";
                 confirmationPending = false;
+                helpString = GetHelpStringForGame();
             }
             else
             {
                 confirmationPending = true;
+                helpString = GetHelpStringForConfirmation();
                 lastUserAction = UserAction.Shuffle;
-                log = "Are you sure you want to shuffle? (Y/N): ";
+                log = "Are you sure you want to shuffle?";
             }
         }
 
@@ -205,6 +210,7 @@ namespace CardChauffeur.WindowsConsole
             {
                 log = "Invalid key";
                 confirmationPending = false;
+                helpString = GetHelpStringForGame();
             }
             else
             {
@@ -214,6 +220,7 @@ namespace CardChauffeur.WindowsConsole
                 {
                     log = "Cards in the deck are over. Do you want to reset? (Y/N): ";
                     confirmationPending = true;
+                    helpString = GetHelpStringForConfirmation();
                     lastUserAction = UserAction.Reset;
                 }
                 else
@@ -221,6 +228,7 @@ namespace CardChauffeur.WindowsConsole
                     log = "A card was drew";
                     cardString = GetCard(GetCardCode(newCard.number), GetSuitCode(newCard.suit));
                     confirmationPending = false;
+                    helpString = GetHelpStringForGame();
                 }
             }
         }
@@ -232,7 +240,7 @@ namespace CardChauffeur.WindowsConsole
 
             headerString = GetHeader();
             cardString = GetClosedCardFrame();
-            helpString = GetHelp();
+            helpString = GetHelpStringForGame();
             log = "";
         }
 
@@ -266,6 +274,7 @@ namespace CardChauffeur.WindowsConsole
                     default:
                         log = "Invalid key";
                         confirmationPending = false;
+                        helpString = GetHelpStringForGame();
                         break;
                 }
                 printFrame();
