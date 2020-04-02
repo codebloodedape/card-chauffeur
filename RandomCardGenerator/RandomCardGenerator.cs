@@ -9,14 +9,14 @@ namespace RandomCardGenerator
     /// </summary>
     public class Engine
     {
-        private Deck deck;
+        private StateObject stateObject;
         private StateManager statemanager;
 
         public void Start()
         {
             Logger.Logger.Log("Starting the game engine");
-            deck = new Deck();
-            statemanager = new StateManager(deck);
+            stateObject = new StateObject();
+            statemanager = new StateManager(stateObject);
         }
 
         /// <summary>
@@ -39,6 +39,16 @@ namespace RandomCardGenerator
         {
             Logger.Logger.Log("Resetting the game");
             statemanager.Reset();
+        }
+
+        public bool Save()
+        {
+            return statemanager.Save();
+        }
+
+        public bool Recover()
+        {
+            return statemanager.Recover();
         }
     }
 }

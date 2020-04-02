@@ -14,24 +14,46 @@ namespace RandomCardGenerator.StateManagement
     {
         internal IState resetState, cardDrewState, deckShuffledState, deckIsEmptyState;
 
-        private StateObject stateObject;
+        internal StateObject stateObject;
+        internal Deck deck;
 
-        internal StateManager(Deck deck)
+        private IState GetCurrentState(EStates state)
+        {
+            switch(state)
+            {
+                case EStates.CARDDREW:
+                    return cardDrewState;
+                case EStates.DECKISEMPTY:
+                    return deckIsEmptyState;
+                case EStates.DECKISSHUFFLED:
+                    return deckShuffledState;
+                case EStates.RESET:
+                    return resetState;
+                default:
+                    return null;
+            }
+        }
+
+        internal StateManager(StateObject stateObject)
         {
             Logger.Logger.Log("Initialising State Manager");
-            stateObject = new StateObject();
+            
+            //stateObject = new StateObject();
 
             // Initialising all the state objects
             Logger.Logger.Log("Initialising all the state objects");
-            resetState = new Reset(this, stateObject);
-            cardDrewState = new CardDrew(this, stateObject);
-            deckShuffledState = new DeckShuffled(this, stateObject);
-            deckIsEmptyState = new DeckIsEmpty(this, stateObject);
+            resetState = new Reset(this);
+            cardDrewState = new CardDrew(this);
+            deckShuffledState = new DeckShuffled(this);
+            deckIsEmptyState = new DeckIsEmpty(this);
 
             // Updating the StateObject with inital values, i.e., newly reset deck and initial current state are "RESET"
             Logger.Logger.Log("Updating the StateObject with inital values");
-            stateObject.deck = deck;
-            stateObject.currentState = resetState;
+            this.stateObject = stateObject;
+            deck = new Deck(this.stateObject);
+            //this.deck = deck;
+            //stateObject.deck = deck.cardStack;
+            //stateObject.currentState = EStates.RESET;
         }
 
         /// <summary>
@@ -42,7 +64,7 @@ namespace RandomCardGenerator.StateManagement
         {
             try
             {
-                return stateObject.currentState.Draw();
+                return GetCurrentState(stateObject.currentState).Draw();
             }
             catch (Exception ex)
             {
@@ -58,7 +80,7 @@ namespace RandomCardGenerator.StateManagement
         {
             try
             {
-                stateObject.currentState.GameReset();
+                GetCurrentState(stateObject.currentState).GameReset();
             }
             catch (Exception ex)
             {
@@ -73,12 +95,24 @@ namespace RandomCardGenerator.StateManagement
         {
             try
             {
-                stateObject.currentState.Shuffle();
+                GetCurrentState(stateObject.currentState).Shuffle();
             }
             catch (Exception ex)
             {
                 Logger.Logger.Log(ex);
             }
+        }
+
+        internal bool Save()
+        {
+            return Logger.Recovery.Save(stateObject);
+        }
+
+        internal bool Recover()
+        {
+            stateObject = Logger.Recovery.Recover<StateObject>();
+            deck.Recover(stateObject);
+            return stateObject == null ? false : true;
         }
     }
 }

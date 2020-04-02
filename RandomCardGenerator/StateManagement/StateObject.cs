@@ -9,9 +9,9 @@ namespace RandomCardGenerator.StateManagement
     /// This holds the state values at a given state. 
     /// For the scope of the appication, it holdes the current cards stack(deck) and the current state's object
     /// </summary>
-    class StateObject
+    public class StateObject
     {
-        internal Deck deck;
-        internal IState currentState;
+        public Card[] cardStack;
+        public EStates currentState;
     }
 }

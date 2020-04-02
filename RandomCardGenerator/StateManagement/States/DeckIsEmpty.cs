@@ -9,12 +9,10 @@ namespace RandomCardGenerator.StateManagement.States
     /// </summary>
     class DeckIsEmpty : IState
     {
-        private StateObject context;
         StateManager stateManager;
-        public DeckIsEmpty(StateManager stateManager, StateObject context)
+        public DeckIsEmpty(StateManager stateManager)
         {
             this.stateManager = stateManager;
-            this.context = context;
         }
         public Card Draw()
         {
@@ -25,9 +23,9 @@ namespace RandomCardGenerator.StateManagement.States
 
         public void GameReset()
         {
-            context.deck.Reset();
+            stateManager.deck.Reset();
             Logger.Logger.Log("Transitioning from DeckIsEmpty state to Reset state");
-            context.currentState = (stateManager.resetState);
+            stateManager.stateObject.currentState = EStates.RESET;
         }
 
         public void Shuffle()

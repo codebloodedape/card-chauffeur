@@ -9,22 +9,20 @@ namespace RandomCardGenerator.StateManagement.States
     /// </summary>
     class CardDrew : IState
     {
-        StateObject context;
         StateManager stateManager;
-        public CardDrew(StateManager stateManager, StateObject context)
+        public CardDrew(StateManager stateManager)
         {
             this.stateManager = stateManager;
-            this.context = context;
         }
         public Card Draw()
         {
-            Card card = context.deck.Draw();
+            Card card = stateManager.deck.Draw();
 
             if (card == null)
             {
                 // Deck is empty.
                 Logger.Logger.Log("Deck is empty. Transitioning from CardDrew state to DeckIsEmpty state");
-                context.currentState = (stateManager.deckIsEmptyState);
+                stateManager.stateObject.currentState = EStates.DECKISEMPTY;
             }
             // else, no need to reassign the current state here.
 
@@ -33,16 +31,16 @@ namespace RandomCardGenerator.StateManagement.States
 
         public void GameReset()
         {
-            context.deck.Reset();
+            stateManager.deck.Reset();
             Logger.Logger.Log("Transitioning from CardDrew state to Reset state");
-            context.currentState = (stateManager.resetState);
+            stateManager.stateObject.currentState = EStates.RESET;
         }
 
         public void Shuffle()
         {
-            context.deck.Shuffle();
+            stateManager.deck.Shuffle();
             Logger.Logger.Log("Transitioning from CardDrew state to DeckShuffled state");
-            context.currentState = (stateManager.deckShuffledState);
+            stateManager.stateObject.currentState = EStates.DECKISSHUFFLED;
         }
     }
 }

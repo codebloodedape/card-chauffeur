@@ -33,7 +33,8 @@ namespace CardChauffeur.WindowsConsole
 
         private readonly string gamehelp =
             "\n\n   Play - P     Shuffle - S\n" +
-            "   Reset - R     Quit - Q\n\n";
+            "   Reset - R     Quit - Q\n" +
+            "   Save - V     Recover - B\n\n";
 
         private readonly string confirmationHelp = 
             "\n\n   Yes - Y     No - N\n\n\n";
@@ -168,6 +169,32 @@ namespace CardChauffeur.WindowsConsole
                         userNotification = "Exiting...";
                         Environment.Exit(0);
                         break;
+                    case EUserAction.Save:
+                        Logger.Logger.Log("Saving the game.");
+                        userNotification = "Saving...";
+                        if (engine.Save())
+                        {
+                            userNotification = "Game saved successfully.";
+                        }
+                        else
+                        {
+                            userNotification = "Game couldn't be saved.";
+                        }
+                        break;
+                    case EUserAction.Recover:
+                        Logger.Logger.Log("Recovering the game.");
+                        userNotification = "Recovering...";
+                        if (engine.Recover())
+                        {
+                            cardString = closedCardFrame;
+                            userNotification = "Game recovered successfully.";
+                        }
+                        else
+                        {
+                            userNotification = "Game couldn't be recoverd.";
+                        }
+                        
+                        break;
                 }
                 //log = "";
             }
@@ -271,7 +298,41 @@ namespace CardChauffeur.WindowsConsole
                 }
             }
         }
-        
+        private void RecoverOptionTriggered()
+        {
+            if (confirmationPending)
+            {
+                userNotification = "Invalid key";
+                confirmationPending = false;
+                helpString = gamehelp;
+            }
+            else
+            {
+                confirmationPending = true;
+                helpString = confirmationHelp;
+                lastUserAction = EUserAction.Recover;
+                userNotification = "Are you sure you want to Recover?";
+            }
+        }
+
+        private void SaveOptionTriggered()
+        {
+            if (confirmationPending)
+            {
+                userNotification = "Invalid key";
+                confirmationPending = false;
+                helpString = gamehelp;
+            }
+            else
+            {
+                confirmationPending = true;
+                helpString = confirmationHelp;
+                lastUserAction = EUserAction.Save;
+                userNotification = "Are you sure you want to Save?";
+            }
+        }
+
+
         /// <summary>
         /// Loads the game engine and returns the object. It does not the game though. 
         /// </summary>
@@ -336,6 +397,12 @@ namespace CardChauffeur.WindowsConsole
                             case ConsoleKey.Q:
                                 QuitOptionTriggered();
                                 break;
+                            case ConsoleKey.V:
+                                SaveOptionTriggered();
+                                break;
+                            case ConsoleKey.B:
+                                RecoverOptionTriggered();
+                                break;
                             case ConsoleKey.Y:
                                 YesOptionTriggered();
                                 break;
@@ -360,5 +427,7 @@ namespace CardChauffeur.WindowsConsole
                 }
             }
         }
+
+        
     }
 }

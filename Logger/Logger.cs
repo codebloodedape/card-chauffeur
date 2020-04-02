@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Text;
 
@@ -6,70 +7,18 @@ namespace Logger
 {
     public class Logger
     {
-        private static string logFilePath;
-        public static bool CreateLogFile(string moduleName, string directory = null)
+        static string logFilePath;
+        public static bool CreateLogFile(string moduleName)
         {
-            string currentDirectoryPath;
-            if (directory != null)
-            {
-                currentDirectoryPath = directory;
-            }
-            else
-            {
-                try
-                {
-                    currentDirectoryPath = Directory.GetCurrentDirectory();
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Console.WriteLine("Couldn't start the application as you do not have permission to read in the current directory");
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Unhandled exception occured.");
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                    return false;
-                }
-            }
-
-            string logDirectoryPath = currentDirectoryPath + "\\log";
-            if (!Directory.Exists(logDirectoryPath))
-            {
-                try
-                {
-                    Directory.CreateDirectory(logDirectoryPath);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Console.WriteLine("Couldn't start the application as you do not have permission to create files in the directory "
-                        + logDirectoryPath);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Unhandled exception occured.");
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
-                    return false;
-                }
-            }
-
-            logFilePath = logDirectoryPath + "\\" + moduleName + ".log";
-
+            logFilePath = moduleName + "-log";
             try
             {
-                using (FileStream fs = File.Create(logFilePath))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes("Log Initialised\n");
-                    fs.Write(info, 0, info.Length);
-                }
+                Utils.CreateFile(logFilePath);
             }
             catch (UnauthorizedAccessException)
             {
-                Console.WriteLine("Couldn't start the application as you do not have permission to create files in the directory "
-                    + logDirectoryPath);
+                Console.WriteLine("Couldn't create file " + logFilePath + " as you do not have permission to create files in the directory "
+                    + Directory.GetCurrentDirectory());
                 return false;
             }
             catch (Exception ex)
@@ -82,40 +31,95 @@ namespace Logger
             return true;
         }
 
-        public static void Log(string text)
+        /// <summary>
+        /// Tries to log, if failed, ignores and moves on
+        /// </summary>
+        /// <param name="log"></param>
+        public static void Log(string log)
+        {
+            Utils.AddToFile(logFilePath, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ff") + ":" + log, true);
+        }
+
+        /// <summary>
+        /// Tries to log, if failed, ignores and moves on
+        /// </summary>
+        /// <param name="ex"></param>
+        public static void Log(Exception ex)
+        {
+            Utils.AddToFile(logFilePath, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ff") + ":" + ex.Message + "\n" + ex.StackTrace, true);
+        }
+    }
+
+    public class Recovery
+    {
+        static string recoveryFileName = "recovery";
+        public static bool Save<T>(T state) where T : class
         {
             try
             {
-                using (StreamWriter file = new StreamWriter(logFilePath, true))
+                Utils.CreateFile(recoveryFileName);
+                string json = JsonConvert.SerializeObject(state);
+                return Utils.AddToFile(recoveryFileName, json, false);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                return false;
+            }
+        }
+
+        public static T Recover<T>() where T : class
+        {
+            string json;
+            try
+            {
+                json = Utils.ReadFile(recoveryFileName);
+                T state = JsonConvert.DeserializeObject<T>(json);
+                return state;
+            }
+            catch(Exception ex)
+            {
+                Logger.Log(ex);
+                return null;
+            }
+        }
+    }
+    
+    internal class Utils
+    {
+        private static string getFilePath(string fileName)
+        {
+            return Directory.GetCurrentDirectory() + "\\" + fileName + ".txt";
+        }
+
+        internal static void CreateFile(string fileName)
+        {
+            using (FileStream fs = File.Create(getFilePath(fileName)))
+            {}
+        }
+
+        internal static bool AddToFile(string fileName, string text, bool append)
+        {
+            string filePath = getFilePath(fileName);
+            try
+            {
+                using (StreamWriter file = new StreamWriter(filePath, append))
                 {
-                    file.WriteLine(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ff") + ":" + text);
+                    file.WriteLine(text);
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Console.Clear();
-                Console.WriteLine("Unable to log. Exiting the game...");
-                Console.ReadKey();
-                Environment.Exit(0);
+                // Unable to log for some reason. Ignoring the exception.
             }
+            return false;
         }
 
-        public static void Log(Exception ex)
+        internal static string ReadFile(string fileName)
         {
-            try
-            {
-                using (StreamWriter file = new StreamWriter(logFilePath, true))
-                {
-                    file.WriteLine(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ff") + ":" + ex.Message + "\n" + ex.StackTrace);
-                }
-            }
-            catch
-            {
-                Console.Clear();
-                Console.WriteLine("Unable to log. Exiting the game...");
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
+            string filePath = getFilePath(fileName);
+            return File.ReadAllText(filePath);
         }
     }
 }

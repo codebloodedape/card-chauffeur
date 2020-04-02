@@ -11,6 +11,8 @@ namespace CardChauffeur.WindowsConsole
     {
         Shuffle,
         Reset,
-        Quit
+        Quit,
+        Save,
+        Recover
     }
 }

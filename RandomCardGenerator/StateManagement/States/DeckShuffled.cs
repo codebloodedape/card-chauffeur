@@ -9,32 +9,30 @@ namespace RandomCardGenerator.StateManagement.States
     /// </summary>
     class DeckShuffled : IState
     {
-        StateObject context;
         StateManager stateManager;
-        public DeckShuffled(StateManager stateManager, StateObject context)
+        public DeckShuffled(StateManager stateManager)
         {
             this.stateManager = stateManager;
-            this.context = context;
         }
         public Card Draw()
         {
-            Card card = context.deck.Draw();
+            Card card = stateManager.deck.Draw();
             Logger.Logger.Log("Transitioning from DeckShuffled state to CardDrew state");
-            context.currentState = (stateManager.cardDrewState);
+            stateManager.stateObject.currentState = EStates.CARDDREW;
             return card;
         }
 
         public void GameReset()
         {
-            context.deck.Reset();
+            stateManager.deck.Reset();
             Logger.Logger.Log("Transitioning from DeckShuffled state to Reset state");
-            context.currentState = (stateManager.resetState);
+            stateManager.stateObject.currentState = EStates.RESET;
         }
 
         public void Shuffle()
         {
             Logger.Logger.Log("Reshuffling");
-            context.deck.Shuffle();
+            stateManager.deck.Shuffle();
             // No need to reassign the current state here.
         }
     }

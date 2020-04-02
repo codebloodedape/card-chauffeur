@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RandomCardGenerator.StateManagement;
+using System;
 
 namespace RandomCardGenerator
 {
@@ -9,7 +10,8 @@ namespace RandomCardGenerator
     /// </summary>
     class Deck
     {
-        private Card[] cardStack;
+        //private Card[] cardStack;
+        private StateObject stateObject;
 
         /// <summary>
         /// This methods will sort the stack of 52 cards to from A-13, K-J based on card suits.
@@ -42,7 +44,7 @@ namespace RandomCardGenerator
                             card.number = i - 39;
                             break;
                     }
-                    cardStack[i - 1] = card;
+                    stateObject.cardStack[i - 1] = card;
                 }
             }
             catch (Exception ex)
@@ -55,8 +57,9 @@ namespace RandomCardGenerator
         /// <summary>
         /// Creats stack of 52 cards, sort them, shuffle them and returns the object of Deck
         /// </summary>
-        internal Deck()
+        internal Deck(StateObject stateObject)
         {
+            this.stateObject = stateObject;
             Reset();
         }
 
@@ -69,13 +72,13 @@ namespace RandomCardGenerator
             Logger.Logger.Log("Drawing a card");
             try
             {
-                if (cardStack.Length == 1)
+                if (stateObject.cardStack.Length == 0)
                 {
                     Logger.Logger.Log("No card found in the deck. Returning null");
                     return null;
                 }
-                Card card = cardStack[cardStack.Length - 1];        // Retrieve the last element of the array before removing it.
-                Array.Resize(ref cardStack, cardStack.Length - 1);  // This removes the last element of the array.
+                Card card = stateObject.cardStack[stateObject.cardStack.Length - 1];        // Retrieve the last element of the array before removing it.
+                Array.Resize(ref stateObject.cardStack, stateObject.cardStack.Length - 1);  // This removes the last element of the array.
                 return card;
             }
             catch(Exception ex)
@@ -92,9 +95,14 @@ namespace RandomCardGenerator
         internal void Reset()
         {
             Logger.Logger.Log("Resetting the game.");
-            cardStack = new Card[52];
+            stateObject.cardStack = new Card[52];
             Sort();
-            Shuffle();
+            //Shuffle();
+        }
+
+        internal void Recover(StateObject stateObject)
+        {
+            this.stateObject = stateObject;
         }
 
         /// <summary>
@@ -108,13 +116,13 @@ namespace RandomCardGenerator
             {
                 Random random = new Random();
 
-                int n = cardStack.Length;
+                int n = stateObject.cardStack.Length;
                 while (n > 1)
                 {
                     int k = random.Next(n--);
-                    Card temp = cardStack[n];
-                    cardStack[n] = cardStack[k];
-                    cardStack[k] = temp;
+                    Card temp = stateObject.cardStack[n];
+                    stateObject.cardStack[n] = stateObject.cardStack[k];
+                    stateObject.cardStack[k] = temp;
                 }
             }
             catch (Exception ex)
