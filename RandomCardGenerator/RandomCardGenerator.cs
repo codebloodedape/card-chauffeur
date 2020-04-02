@@ -1,5 +1,4 @@
 ﻿using RandomCardGenerator.StateManagement;
-using Logger;
 
 namespace RandomCardGenerator
 {
@@ -12,6 +11,9 @@ namespace RandomCardGenerator
         private StateObject stateObject;
         private StateManager statemanager;
 
+        /// <summary>
+        /// Initialises state machine and sets the initial state object
+        /// </summary>
         public void Start()
         {
             Logger.Logger.Log("Starting the game engine");
@@ -29,23 +31,37 @@ namespace RandomCardGenerator
             return statemanager.Draw();
         }
 
+        /// <summary>
+        /// Shuffles the deck
+        /// </summary>
         public void Shuffle()
         {
             Logger.Logger.Log("Shuffling the deck");
             statemanager.Shuffle();
         }
 
+        /// <summary>
+        /// Resets the game
+        /// </summary>
         public void Reset()
         {
             Logger.Logger.Log("Resetting the game");
             statemanager.Reset();
         }
 
+        /// <summary>
+        /// Saves the state of the game on to a local file
+        /// </summary>
+        /// <returns></returns>
         public bool Save()
         {
             return statemanager.Save();
         }
 
+        /// <summary>
+        /// Recovers the state of the previously saved game
+        /// </summary>
+        /// <returns></returns>
         public bool Recover()
         {
             return statemanager.Recover();

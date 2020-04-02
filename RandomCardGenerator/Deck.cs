@@ -10,7 +10,6 @@ namespace RandomCardGenerator
     /// </summary>
     class Deck
     {
-        //private Card[] cardStack;
         private StateObject stateObject;
 
         /// <summary>
@@ -97,9 +96,13 @@ namespace RandomCardGenerator
             Logger.Logger.Log("Resetting the game.");
             stateObject.cardStack = new Card[52];
             Sort();
-            //Shuffle();
+            Shuffle();
         }
 
+        /// <summary>
+        /// Resets the game to the state object passed
+        /// </summary>
+        /// <param name="stateObject">State object to reset to</param>
         internal void Recover(StateObject stateObject)
         {
             this.stateObject = stateObject;

@@ -13,10 +13,10 @@ namespace CardChauffeur.WindowsConsole
     {
         private bool logInitialized = false;
         private readonly Engine engine;
-        private readonly string headerString = 
+        private readonly string headerString =
             "\n       CARD CHAUFFEUR\n\n";
 
-        private readonly string closedCardFrame = 
+        private readonly string closedCardFrame =
             "   .====================.\n" +
             "   ||||||||||||||||||||||\n" +
             "   ||||||||||||||||||||||\n" +
@@ -36,7 +36,7 @@ namespace CardChauffeur.WindowsConsole
             "   Reset - R     Quit - Q\n" +
             "   Save - V     Recover - B\n\n";
 
-        private readonly string confirmationHelp = 
+        private readonly string confirmationHelp =
             "\n\n   Yes - Y     No - N\n\n\n";
 
         private string cardString, helpString, userNotification;
@@ -94,7 +94,7 @@ namespace CardChauffeur.WindowsConsole
         /// </summary>
         private void printFrame()
         {
-            Logger.Logger.Log("Refreshing screen. \nUI state - \nHeader: " + headerString + " Help: " + 
+            Logger.Logger.Log("Refreshing screen. \nUI state - \nHeader: " + headerString + " Help: " +
                 helpString + " User notification: " + userNotification);
             Console.Clear();
             Console.WriteLine(headerString + cardString + helpString + userNotification);
@@ -193,7 +193,7 @@ namespace CardChauffeur.WindowsConsole
                         {
                             userNotification = "Game couldn't be recoverd.";
                         }
-                        
+
                         break;
                 }
                 //log = "";
@@ -298,6 +298,10 @@ namespace CardChauffeur.WindowsConsole
                 }
             }
         }
+
+        /// <summary>
+        /// When Recover is selected by the user
+        /// </summary>
         private void RecoverOptionTriggered()
         {
             if (confirmationPending)
@@ -315,6 +319,9 @@ namespace CardChauffeur.WindowsConsole
             }
         }
 
+        /// <summary>
+        /// When Save is selected by the user
+        /// </summary>
         private void SaveOptionTriggered()
         {
             if (confirmationPending)
@@ -417,7 +424,6 @@ namespace CardChauffeur.WindowsConsole
                         }
                         printFrame();
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -427,7 +433,5 @@ namespace CardChauffeur.WindowsConsole
                 }
             }
         }
-
-        
     }
 }

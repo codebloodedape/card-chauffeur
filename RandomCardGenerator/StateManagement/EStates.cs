@@ -4,6 +4,9 @@ using System.Text;
 
 namespace RandomCardGenerator.StateManagement
 {
+    /// <summary>
+    /// Enum representing the states of the game
+    /// </summary>
     public enum EStates
     {
         CARDDREW,

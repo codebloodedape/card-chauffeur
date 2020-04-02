@@ -17,6 +17,11 @@ namespace RandomCardGenerator.StateManagement
         internal StateObject stateObject;
         internal Deck deck;
 
+        /// <summary>
+        /// Gets the state object
+        /// </summary>
+        /// <param name="state">Enum value of state</param>
+        /// <returns>State object</returns>
         private IState GetCurrentState(EStates state)
         {
             switch(state)
@@ -37,8 +42,6 @@ namespace RandomCardGenerator.StateManagement
         internal StateManager(StateObject stateObject)
         {
             Logger.Logger.Log("Initialising State Manager");
-            
-            //stateObject = new StateObject();
 
             // Initialising all the state objects
             Logger.Logger.Log("Initialising all the state objects");
@@ -51,13 +54,10 @@ namespace RandomCardGenerator.StateManagement
             Logger.Logger.Log("Updating the StateObject with inital values");
             this.stateObject = stateObject;
             deck = new Deck(this.stateObject);
-            //this.deck = deck;
-            //stateObject.deck = deck.cardStack;
-            //stateObject.currentState = EStates.RESET;
         }
 
         /// <summary>
-        /// Request for state trasistion on drawing a card
+        /// Request for state transistion on drawing a card
         /// </summary>
         /// <returns>Returns the cards topmost card in the deck. Returns NULL if the deck is empty</returns>
         internal Card Draw()
@@ -103,11 +103,20 @@ namespace RandomCardGenerator.StateManagement
             }
         }
 
+
+        /// <summary>
+        /// Request for saving the state of the game
+        /// </summary>
+        /// <returns>Returns True if saved successfully</returns>
         internal bool Save()
         {
             return Logger.Recovery.Save(stateObject);
         }
 
+        /// <summary>
+        /// Request for the recovery of the previously saved state of the game
+        /// </summary>
+        /// <returns>Returns True is recovered successfully</returns>
         internal bool Recover()
         {
             stateObject = Logger.Recovery.Recover<StateObject>();
