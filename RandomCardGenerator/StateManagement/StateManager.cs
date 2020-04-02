@@ -6,9 +6,9 @@ namespace RandomCardGenerator.StateManagement
     /// <summary>
     /// Resposibility of State Manager are as follows:
     /// 1. initialise all state objects,
-    /// 2. create state representation object with initial values of the deck and current state (which is 'Reset'),
+    /// 2. create state representation object with initial values of the deck(shuffled) and current state (which is 'Reset'),
     /// 3. receive requests from the game(Random Card Generator), and
-    /// 4. invoke current states methods based on the request
+    /// 4. invoke current state's methods based on the request
     /// </summary>
     public class StateManager
     {
@@ -46,7 +46,7 @@ namespace RandomCardGenerator.StateManagement
             // Initialising all the state objects
             Logger.Logger.Log("Initialising all the state objects");
             resetState = new Reset(this);
-            cardDrewState = new CardDrew(this);
+            cardDrewState = new CardDrawn(this);
             deckShuffledState = new DeckShuffled(this);
             deckIsEmptyState = new DeckIsEmpty(this);
 

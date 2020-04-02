@@ -39,4 +39,5 @@ namespace Logger
             return File.ReadAllText(filePath);
         }
     }
+}
 

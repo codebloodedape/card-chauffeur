@@ -291,7 +291,7 @@ namespace CardChauffeur.WindowsConsole
                 }
                 else
                 {
-                    userNotification = "A card was drew";
+                    userNotification = "A card was drawn";
                     cardString = GetCard(GetCardCode(newCard.number), GetSuitCode(newCard.suit));
                     confirmationPending = false;
                     helpString = gamehelp;

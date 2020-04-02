@@ -7,10 +7,10 @@ namespace RandomCardGenerator.StateManagement.States
     /// <summary>
     /// State representing a card has been drew.
     /// </summary>
-    class CardDrew : IState
+    class CardDrawn : IState
     {
         StateManager stateManager;
-        public CardDrew(StateManager stateManager)
+        public CardDrawn(StateManager stateManager)
         {
             this.stateManager = stateManager;
         }

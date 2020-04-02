@@ -10,7 +10,7 @@ namespace Logger
         static string logFilePath;
 
         /// <summary>
-        /// Creates a log file by the Module name
+        /// Creates a log file by the Module name. If the log file already exists, it overriddes the content.
         /// </summary>
         /// <param name="moduleName">Name of the log file</param>
         /// <returns></returns>

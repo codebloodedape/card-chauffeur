@@ -8,7 +8,7 @@ namespace Logger
         static string recoveryFileName = "recovery";
 
         /// <summary>
-        /// Save the state of the application in a file
+        /// Creates a new file, or override the existing file and save the state of the application in it. 
         /// </summary>
         /// <typeparam name="T">Type of the state</typeparam>
         /// <param name="state">Object representing the state</param>
@@ -29,7 +29,7 @@ namespace Logger
         }
 
         /// <summary>
-        /// Retrieves the saved state
+        /// Retrieves the saved state from the previously saved (if any) state
         /// </summary>
         /// <typeparam name="T">Type of the state</typeparam>
         /// <returns>Object representing the atate</returns>
