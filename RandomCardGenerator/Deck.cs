@@ -16,31 +16,40 @@ namespace RandomCardGenerator
         /// </summary>
         private void Sort()
         {
-            for (int i = 1; i <= 52; i++)
+            Logger.Logger.Log("Sorting the deck");
+            try
             {
-                Card card = new Card();
-                int determinant = ((i - 1) / 13) + 1;   // This variable determines which suit to allocate
-                switch (determinant)
+                for (int i = 1; i <= 52; i++)
                 {
-                    case 1:
-                        card.suit = Suit.Club;
-                        card.number = i;
-                        break;
-                    case 2:
-                        card.suit = Suit.Diamond;
-                        card.number = i - 13;
-                        break;
-                    case 3:
-                        card.suit = Suit.Heart;
-                        card.number = i - 26;
-                        break;
-                    case 4:
-                        card.suit = Suit.Spade;
-                        card.number = i - 39;
-                        break;
+                    Card card = new Card();
+                    int determinant = ((i - 1) / 13) + 1;   // This variable determines which suit to allocate
+                    switch (determinant)
+                    {
+                        case 1:
+                            card.suit = Suit.Club;
+                            card.number = i;
+                            break;
+                        case 2:
+                            card.suit = Suit.Diamond;
+                            card.number = i - 13;
+                            break;
+                        case 3:
+                            card.suit = Suit.Heart;
+                            card.number = i - 26;
+                            break;
+                        case 4:
+                            card.suit = Suit.Spade;
+                            card.number = i - 39;
+                            break;
+                    }
+                    cardStack[i - 1] = card;
                 }
-                cardStack[i - 1] = card;
             }
+            catch (Exception ex)
+            {
+                Logger.Logger.Log(ex);
+            }
+            
         }
 
         /// <summary>
@@ -57,13 +66,24 @@ namespace RandomCardGenerator
         /// <returns>Topmost card drawn</returns>
         internal Card Draw()
         {
-            if (cardStack.Length == 1)
+            Logger.Logger.Log("Drawing a card");
+            try
             {
+                if (cardStack.Length == 1)
+                {
+                    Logger.Logger.Log("No card found in the deck. Returning null");
+                    return null;
+                }
+                Card card = cardStack[cardStack.Length - 1];        // Retrieve the last element of the array before removing it.
+                Array.Resize(ref cardStack, cardStack.Length - 1);  // This removes the last element of the array.
+                return card;
+            }
+            catch(Exception ex)
+            {
+                Logger.Logger.Log(ex);
+                Logger.Logger.Log("Returning null.");
                 return null;
             }
-            Card card = cardStack[cardStack.Length - 1];        // Retrieve the last element of the array before removing it.
-            Array.Resize(ref cardStack, cardStack.Length - 1);  // This removes the last element of the array.
-            return card;
         }
 
         /// <summary>
@@ -71,6 +91,7 @@ namespace RandomCardGenerator
         /// </summary>
         internal void Reset()
         {
+            Logger.Logger.Log("Resetting the game.");
             cardStack = new Card[52];
             Sort();
             Shuffle();
@@ -81,16 +102,26 @@ namespace RandomCardGenerator
         /// </summary>
         internal void Shuffle()
         {
-            Random random = new Random();
-            
-            int n = cardStack.Length;
-            while (n > 1)
+            Logger.Logger.Log("Shuffling the deck");
+
+            try
             {
-                int k = random.Next(n--);
-                Card temp = cardStack[n];
-                cardStack[n] = cardStack[k];
-                cardStack[k] = temp;
+                Random random = new Random();
+
+                int n = cardStack.Length;
+                while (n > 1)
+                {
+                    int k = random.Next(n--);
+                    Card temp = cardStack[n];
+                    cardStack[n] = cardStack[k];
+                    cardStack[k] = temp;
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.Logger.Log(ex);
+            }
+            
         }
     }
 }

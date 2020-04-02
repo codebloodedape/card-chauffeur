@@ -19,18 +19,21 @@ namespace RandomCardGenerator.StateManagement.States
         public Card Draw()
         {
             // Cannot draw from an empty deck!
+            Logger.Logger.Log("Cannot draw from an empty deck");
             return null;
         }
 
         public void GameReset()
         {
             context.deck.Reset();
+            Logger.Logger.Log("Transitioning from DeckIsEmpty state to Reset state");
             context.currentState = (stateManager.resetState);
         }
 
         public void Shuffle()
         {
             // Cannot shuffle an empty deck!
+            Logger.Logger.Log("Cannot shuffle an empty deck");
         }
     }
 }

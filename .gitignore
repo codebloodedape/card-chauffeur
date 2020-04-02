@@ -20,6 +20,10 @@ RandomCardGenerator/obj/
 TestApplication/bin/
 TestApplication/obj/
 
+
+Logger/bin/
+Logger/obj/
+
 # Compiled source #
 ###################
 *.com

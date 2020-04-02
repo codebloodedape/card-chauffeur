@@ -8,4 +8,8 @@
     <Compile Remove="StateManagement\State.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj" />
+  </ItemGroup>
+
 </Project>

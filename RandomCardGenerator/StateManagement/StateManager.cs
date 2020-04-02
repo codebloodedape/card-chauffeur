@@ -1,4 +1,5 @@
 ﻿using RandomCardGenerator.StateManagement.States;
+using System;
 
 namespace RandomCardGenerator.StateManagement
 {
@@ -17,15 +18,18 @@ namespace RandomCardGenerator.StateManagement
 
         internal StateManager(Deck deck)
         {
+            Logger.Logger.Log("Initialising State Manager");
             stateObject = new StateObject();
 
             // Initialising all the state objects
+            Logger.Logger.Log("Initialising all the state objects");
             resetState = new Reset(this, stateObject);
             cardDrewState = new CardDrew(this, stateObject);
             deckShuffledState = new DeckShuffled(this, stateObject);
             deckIsEmptyState = new DeckIsEmpty(this, stateObject);
 
             // Updating the StateObject with inital values, i.e., newly reset deck and initial current state are "RESET"
+            Logger.Logger.Log("Updating the StateObject with inital values");
             stateObject.deck = deck;
             stateObject.currentState = resetState;
         }
@@ -36,7 +40,15 @@ namespace RandomCardGenerator.StateManagement
         /// <returns>Returns the cards topmost card in the deck. Returns NULL if the deck is empty</returns>
         internal Card Draw()
         {
-            return stateObject.currentState.Draw();
+            try
+            {
+                return stateObject.currentState.Draw();
+            }
+            catch (Exception ex)
+            {
+                Logger.Logger.Log(ex);
+                return null;
+            }
         }
 
         /// <summary>
@@ -44,7 +56,14 @@ namespace RandomCardGenerator.StateManagement
         /// </summary>
         internal void Reset()
         {
-            stateObject.currentState.GameReset();
+            try
+            {
+                stateObject.currentState.GameReset();
+            }
+            catch (Exception ex)
+            {
+                Logger.Logger.Log(ex);
+            }
         }
 
         /// <summary>
@@ -52,7 +71,14 @@ namespace RandomCardGenerator.StateManagement
         /// </summary>
         internal void Shuffle()
         {
-            stateObject.currentState.Shuffle();
+            try
+            {
+                stateObject.currentState.Shuffle();
+            }
+            catch (Exception ex)
+            {
+                Logger.Logger.Log(ex);
+            }
         }
     }
 }

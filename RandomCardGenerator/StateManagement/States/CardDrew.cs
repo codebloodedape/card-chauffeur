@@ -23,6 +23,7 @@ namespace RandomCardGenerator.StateManagement.States
             if (card == null)
             {
                 // Deck is empty.
+                Logger.Logger.Log("Deck is empty. Transitioning from CardDrew state to DeckIsEmpty state");
                 context.currentState = (stateManager.deckIsEmptyState);
             }
             // else, no need to reassign the current state here.
@@ -33,12 +34,14 @@ namespace RandomCardGenerator.StateManagement.States
         public void GameReset()
         {
             context.deck.Reset();
+            Logger.Logger.Log("Transitioning from CardDrew state to Reset state");
             context.currentState = (stateManager.resetState);
         }
 
         public void Shuffle()
         {
             context.deck.Shuffle();
+            Logger.Logger.Log("Transitioning from CardDrew state to DeckShuffled state");
             context.currentState = (stateManager.deckShuffledState);
         }
     }

@@ -20,6 +20,7 @@ namespace RandomCardGenerator.StateManagement.States
         public Card Draw()
         {
             Card card = context.deck.Draw();
+            Logger.Logger.Log("Transitioning from Reset state to CardDrew state");
             context.currentState = (stateManager.cardDrewState);
             return card;
         }
@@ -27,11 +28,13 @@ namespace RandomCardGenerator.StateManagement.States
         public void Shuffle()
         {
             context.deck.Shuffle();
+            Logger.Logger.Log("Transitioning from Reset state to DeckShuffled state");
             context.currentState = (stateManager.deckShuffledState);
         }
 
         public void GameReset()
         {
+            Logger.Logger.Log("Re-resetting");
             context.deck.Reset();
             // No need to reassign the current state here.
         }
