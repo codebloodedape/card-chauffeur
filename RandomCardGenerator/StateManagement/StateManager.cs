@@ -26,7 +26,7 @@ namespace RandomCardGenerator.StateManagement
         {
             switch(state)
             {
-                case EStates.CARDDREW:
+                case EStates.CARDDRAWN:
                     return cardDrewState;
                 case EStates.DECKISEMPTY:
                     return deckIsEmptyState;
@@ -103,7 +103,6 @@ namespace RandomCardGenerator.StateManagement
             }
         }
 
-
         /// <summary>
         /// Request for saving the state of the game
         /// </summary>
@@ -120,7 +119,7 @@ namespace RandomCardGenerator.StateManagement
         internal bool Recover()
         {
             stateObject = Logger.Recovery.Recover<StateObject>();
-            deck.Recover(stateObject);
+            deck.Reset(stateObject); // Updating the deck state
             return stateObject == null ? false : true;
         }
     }

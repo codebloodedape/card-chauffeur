@@ -15,14 +15,21 @@ namespace RandomCardGenerator.StateManagement.States
             this.stateManager = stateManager;
         }
 
+        /// <summary>
+        /// State transistion: RESET -> CARD DRAW
+        /// </summary>
+        /// <returns></returns>
         public Card Draw()
         {
             Card card = stateManager.deck.Draw();
             Logger.Logger.Log("Transitioning from Reset state to CardDrew state");
-            stateManager.stateObject.currentState = EStates.CARDDREW;
+            stateManager.stateObject.currentState = EStates.CARDDRAWN;
             return card;
         }
 
+        /// <summary>
+        /// State transistion: RESET -> DECK IS SHUFFLED
+        /// </summary>
         public void Shuffle()
         {
             stateManager.deck.Shuffle();
@@ -30,6 +37,9 @@ namespace RandomCardGenerator.StateManagement.States
             stateManager.stateObject.currentState = EStates.DECKISSHUFFLED;
         }
 
+        /// <summary>
+        /// State transistion: RESET -> RESET
+        /// </summary>
         public void GameReset()
         {
             Logger.Logger.Log("Re-resetting");

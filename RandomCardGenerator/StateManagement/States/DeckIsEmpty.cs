@@ -10,10 +10,20 @@ namespace RandomCardGenerator.StateManagement.States
     class DeckIsEmpty : IState
     {
         StateManager stateManager;
+
+        /// <summary>
+        /// State transistion: DECK IS EMPTY -> DECK IS EMPTY
+        /// </summary>
+        /// <param name="stateManager"></param>
         public DeckIsEmpty(StateManager stateManager)
         {
             this.stateManager = stateManager;
         }
+
+        /// <summary>
+        /// State transistion: DECk IS EMPTY -> CARD DRAWN
+        /// </summary>
+        /// <returns></returns>
         public Card Draw()
         {
             // Cannot draw from an empty deck!
@@ -21,6 +31,9 @@ namespace RandomCardGenerator.StateManagement.States
             return null;
         }
 
+        /// <summary>
+        /// State transistion: DECK IS EMPTY -> RESET
+        /// </summary>
         public void GameReset()
         {
             stateManager.deck.Reset();
@@ -28,6 +41,9 @@ namespace RandomCardGenerator.StateManagement.States
             stateManager.stateObject.currentState = EStates.RESET;
         }
 
+        /// <summary>
+        /// State transistion: DECK IS EMPTY -> DECK SHUFFLED
+        /// </summary>
         public void Shuffle()
         {
             // Cannot shuffle an empty deck!

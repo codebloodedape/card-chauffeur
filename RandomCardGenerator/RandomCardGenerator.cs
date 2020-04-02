@@ -55,6 +55,7 @@ namespace RandomCardGenerator
         /// <returns></returns>
         public bool Save()
         {
+            Logger.Logger.Log("Saving the state of the game");
             return statemanager.Save();
         }
 
@@ -64,6 +65,7 @@ namespace RandomCardGenerator
         /// <returns></returns>
         public bool Recover()
         {
+            Logger.Logger.Log("Recovering the previously saved state of the game");
             return statemanager.Recover();
         }
     }

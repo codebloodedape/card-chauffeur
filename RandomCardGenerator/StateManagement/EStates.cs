@@ -9,7 +9,7 @@ namespace RandomCardGenerator.StateManagement
     /// </summary>
     public enum EStates
     {
-        CARDDREW,
+        CARDDRAWN,
         DECKISEMPTY,
         DECKISSHUFFLED,
         RESET

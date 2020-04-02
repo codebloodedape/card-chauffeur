@@ -103,7 +103,7 @@ namespace RandomCardGenerator
         /// Resets the game to the state object passed
         /// </summary>
         /// <param name="stateObject">State object to reset to</param>
-        internal void Recover(StateObject stateObject)
+        internal void Reset(StateObject stateObject)
         {
             this.stateObject = stateObject;
         }
