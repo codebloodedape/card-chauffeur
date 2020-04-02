@@ -1,4 +1,5 @@
 ﻿using RandomCardGenerator.StateManagement;
+using System.Threading.Tasks;
 
 namespace RandomCardGenerator
 {
@@ -53,7 +54,7 @@ namespace RandomCardGenerator
         /// Saves the state of the game on to a local file
         /// </summary>
         /// <returns></returns>
-        public bool Save()
+        public Task<bool> Save()
         {
             Logger.Logger.Log("Saving the state of the game");
             return statemanager.Save();
@@ -63,10 +64,10 @@ namespace RandomCardGenerator
         /// Recovers the state of the previously saved game
         /// </summary>
         /// <returns></returns>
-        public bool Recover()
+        public async Task<bool> Recover()
         {
             Logger.Logger.Log("Recovering the previously saved state of the game");
-            return statemanager.Recover();
+            return await statemanager.Recover();
         }
     }
 }

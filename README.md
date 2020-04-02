@@ -24,3 +24,10 @@
 3. User can reset the game where it will reshuffle the deck along with the drawn card
 4. User can save the state of the game and later recover it
 
+# Features/changes to the application that are pending
+
+1. Online multi-user functionality - multiple users can join a single session of this game
+2. Session based gaming - user can save the session. This can be done now by manually storing the recovery file after saving the game
+3. Undo - user can undo the last action by restoring the last state of the game
+4. UI state machine - implementation of state machine for UI for more informative and interactive experience
+5. Multi threading implementation for better performance

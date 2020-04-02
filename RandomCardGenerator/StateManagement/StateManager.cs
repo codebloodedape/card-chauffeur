@@ -1,5 +1,6 @@
 ﻿using RandomCardGenerator.StateManagement.States;
 using System;
+using System.Threading.Tasks;
 
 namespace RandomCardGenerator.StateManagement
 {
@@ -107,7 +108,7 @@ namespace RandomCardGenerator.StateManagement
         /// Request for saving the state of the game
         /// </summary>
         /// <returns>Returns True if saved successfully</returns>
-        internal bool Save()
+        internal Task<bool> Save()
         {
             return Logger.Recovery.Save(stateObject);
         }
@@ -116,9 +117,9 @@ namespace RandomCardGenerator.StateManagement
         /// Request for the recovery of the previously saved state of the game
         /// </summary>
         /// <returns>Returns True is recovered successfully</returns>
-        internal bool Recover()
+        internal async Task<bool> Recover()
         {
-            stateObject = Logger.Recovery.Recover<StateObject>();
+            stateObject = await Logger.Recovery.Recover<StateObject>();
             deck.Reset(stateObject); // Updating the deck state
             return stateObject == null ? false : true;
         }

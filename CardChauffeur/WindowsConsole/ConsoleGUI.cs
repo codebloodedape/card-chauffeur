@@ -145,7 +145,7 @@ namespace CardChauffeur.WindowsConsole
         /// <summary>
         /// When Yes is selected by the user
         /// </summary>
-        private void YesOptionTriggered()
+        private async void YesOptionTriggered()
         {
             if (confirmationPending)
             {
@@ -172,7 +172,7 @@ namespace CardChauffeur.WindowsConsole
                     case EUserAction.Save:
                         Logger.Logger.Log("Saving the game.");
                         userNotification = "Saving...";
-                        if (engine.Save())
+                        if (await engine.Save())
                         {
                             userNotification = "Game saved successfully.";
                         }
@@ -184,7 +184,7 @@ namespace CardChauffeur.WindowsConsole
                     case EUserAction.Recover:
                         Logger.Logger.Log("Recovering the game.");
                         userNotification = "Recovering...";
-                        if (engine.Recover())
+                        if (await engine.Recover())
                         {
                             cardString = closedCardFrame;
                             userNotification = "Game recovered successfully.";

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace Logger
 {
@@ -13,7 +14,7 @@ namespace Logger
         /// <typeparam name="T">Type of the state</typeparam>
         /// <param name="state">Object representing the state</param>
         /// <returns></returns>
-        public static bool Save<T>(T state) where T : class
+        public static async Task<bool> Save<T>(T state) where T : class
         {
             try
             {
@@ -33,7 +34,7 @@ namespace Logger
         /// </summary>
         /// <typeparam name="T">Type of the state</typeparam>
         /// <returns>Object representing the atate</returns>
-        public static T Recover<T>() where T : class
+        public static async Task<T> Recover<T>() where T : class
         {
             string json;
             try
